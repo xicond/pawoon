@@ -65,11 +65,13 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $model = new Product();
+        $model->scenario = 'create';
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
             $model->imageFiles = UploadedFile::getInstance($model, 'imageFiles');
             if($model->upload() && $model->save(false)) {
+//                if(!Yii::$app->request->isAjax)
                 return $this->redirect(['view', 'id' => $model->product_id]);
             }
         }
@@ -87,11 +89,13 @@ class ProductController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = 'update';
 
         if (Yii::$app->request->isPost) {
             $model->load(Yii::$app->request->post());
             $model->imageFiles = UploadedFile::getInstance($model, 'imageFiles');
             if($model->upload() && $model->save(false)) {
+                if(!Yii::$app->request->isAjax)
                 return $this->redirect(['view', 'id' => $model->product_id]);
             }
         }

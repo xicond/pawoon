@@ -14,11 +14,18 @@ $this->params['breadcrumbs'][] = $this->title;
 $script = <<< JS
 
 $("document").ready(function(){ 
-        $("#_form_product").on("pjax:end", function() {
+        $("#_form_product_create").on("pjax:end", function(e) {
+            e.preventDefault();
             $.pjax.reload({container:"#_list_product"});  //Reload GridView
         });
-        
-        $("#a")
+                
+        $(document).on('click', "#_list_product td>a[title=Update]", function (e) {
+            //request data ajax
+            e.preventDefault();
+            $.pjax.reload({url: $(this).attr('href'), container:"#_form_product_update"});
+            $('#_modal_edit').modal();
+            
+        });
     });
     
 JS;
@@ -75,6 +82,7 @@ $this->registerJs($script);
     <?php \yii\widgets\Pjax::end(); ?>
 
     <?php
+    if($dataProvider->count)
     Modal::begin([
 //            'header' => '<h5>Add Product</h5>',
 //        'toggleButton' => ['label' => 'Create Product', 'class' => 'btn btn-success'],
@@ -87,7 +95,7 @@ $this->registerJs($script);
         <h1><?= Html::encode('Edit Product') ?></h1>
 
         <?= $this->render('_form', [
-            'model' => new Product(),
+            'model' => $dataProvider->models[0],
             'action' => ['update'],
         ]) ?>
 
