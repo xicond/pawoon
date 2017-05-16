@@ -7,7 +7,7 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\Product */
 /* @var $form yii\widgets\ActiveForm */
 
-$formArgs = ['options' => ['enctype' => 'multipart/form-data', 'data-pjax' => true], 'enableAjaxValidation' => false,
+$formArgs = ['options' => ['enctype' => 'multipart/form-data', 'data-pjax' => true, 'id' => $model->isNewRecord?'product_create':'product_update'], 'enableAjaxValidation' => false,
     'enableClientValidation' => true,];
 if (isset($action)) {
     $formArgs['action'] = $action;
@@ -17,7 +17,7 @@ if (isset($action)) {
 ?>
 
 <div class="product-form">
-    <?php yii\widgets\Pjax::begin(['id' => '_form_product'.($model->isNewRecord?'_create':'_update')]) ?>
+    <?= Html::beginTag('div',['id' => '_form_product'.($model->isNewRecord?'_create':'_update')]) ?>
     <?php $form = ActiveForm::begin($formArgs); ?>
 
     <?= $form->field($model, 'imageFiles')->fileInput() ?>
@@ -31,6 +31,6 @@ if (isset($action)) {
     </div>
 
     <?php ActiveForm::end(); ?>
-    <?php yii\widgets\Pjax::end() ?>
+    <?= Html::endTag('div') ?>
 
 </div>

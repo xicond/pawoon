@@ -71,7 +71,7 @@ class ProductController extends Controller
             $model->load(Yii::$app->request->post());
             $model->imageFiles = UploadedFile::getInstance($model, 'imageFiles');
             if($model->upload() && $model->save(false)) {
-//                if(!Yii::$app->request->isAjax)
+                if(!Yii::$app->request->isAjax)
                 return $this->redirect(['view', 'id' => $model->product_id]);
             }
         }
@@ -97,6 +97,7 @@ class ProductController extends Controller
             if($model->upload() && $model->save(false)) {
                 if(!Yii::$app->request->isAjax)
                 return $this->redirect(['view', 'id' => $model->product_id]);
+                else $model->refresh();
             }
         }
         return $this->render('update', [
